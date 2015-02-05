@@ -2,4 +2,5 @@
 /output/
 /tmp/
 /crash.log
+/nanoc-serverid.pid
 

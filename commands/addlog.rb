@@ -52,12 +52,12 @@ run do |opts, args, cmd|
 
     # read current log files to determine number of next one
     cur_dir = File.expand_path(File.dirname(__FILE__))
-    logs = Dir[cur_dir.to_s + '/../content/logs/*.html']
+    logs = Dir[cur_dir.to_s + '/../content/logs/*.md']
     max_log = -1
-    logs.each{|log| max_log = [max_log, /\/(\d+).html$/.match(log)[1].to_i].max}
+    logs.each{|log| max_log = [max_log, /\/(\d+)\.md$/.match(log)[1].to_i].max}
 
     # write to new log file
-    new_log_path = cur_dir.to_s + '/../content/logs/' + (max_log + 1).to_s + '.html'
+    new_log_path = cur_dir.to_s + '/../content/logs/' + (max_log + 1).to_s + '.md'
     File.open(new_log_path, 'w') { |file|
         file.write("---\n")
         file.write('start_time: "' + start_t + "\"\n")
