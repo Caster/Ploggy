@@ -1,0 +1,156 @@
+@import url('http://fonts.googleapis.com/css?family=Raleway:400,700');
+
+@import "bootstrap/bootstrap.less";
+
+@contrast-color: #009688;
+@contrast-color-light: #B2DFDB;
+@footer-height: 62px;
+
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    margin-bottom: (@footer-height + 20px);
+    padding-top: 20px;
+}
+
+p:last-child {
+    margin-bottom: 0;
+}
+
+ul {
+    padding-left: 20px;
+
+    &:last-child {
+        margin-bottom: 0;
+    }
+}
+
+.entry {
+    .row;
+    border-left: 2px solid @hr-border;
+    margin: 20px 15px 0;
+    padding: 0 0 0 13px;
+
+    .date {
+        font-size: @font-size-h4;
+
+        .small {
+            margin-left: 10px;
+            font-size: (0.8 * @font-size-base);
+        }
+
+        .category {
+            float: right;
+        }
+    }
+
+    .desc {
+        .make-md-column(8);
+    }
+
+    .glyphicon {
+        margin-left: 5px;
+        font-size: (0.8 * @font-size-base);
+    }
+
+    .persons {
+        .make-md-column(4);
+        padding: 0;
+
+        .person {
+            float: right;
+            clear: right;
+        }
+    }
+}
+
+.footer {
+    position: absolute;
+    bottom: 0;
+    margin-top: 20px;
+    padding: 20px 15px 0;
+    border-top: 2px solid @hr-border;
+    height: @footer-height;
+
+    // for the width: same as .container, but subtract container padding
+    .container-fixed();
+    width: ~"calc(100% - 30px)";
+
+    @media (min-width: @screen-sm-min) {
+        width: (@container-sm - 30px);
+    }
+    @media (min-width: @screen-md-min) {
+        width: (@container-md - 30px);
+    }
+    @media (min-width: @screen-lg-min) {
+        width: (@container-lg - 30px);
+    }
+}
+
+.glyphicon {
+    content: '';
+    width: 18px;
+    position: relative;
+    top: 2px;
+}
+
+.header {
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid @hr-border;
+
+    & > .nav {
+        margin: 4px 0 0;
+    }
+
+    & > h3.text-muted {
+        margin: 0;
+        padding: 7px 15px; // based off of @nav-link-padding
+    }
+}
+
+.row {
+    padding: 0 30px;
+}
+
+.stats {
+    padding: 4px 15px;
+    border: 2px solid @hr-border;
+    text-align: justify;
+    -moz-text-align-last: justify;
+    text-align-last: justify;
+
+    .stat {
+        display: inline-block;
+        text-align: center;
+
+        .stat-val {
+            font-weight: bold;
+        }
+
+        .stat-name {
+            margin-left: 3px;
+            color: @gray-light;
+        }
+    }
+}
+
+.stats-day-progress {
+    width: 100%;
+    height: 8px;
+    border: 2px solid @hr-border;
+    border-top: 0 none;
+    background: @gray-lighter;
+}
+
+.stats-day-progress-bar {
+    height: 100%;
+    background: @contrast-color;
+
+    &.light {
+        background: @contrast-color-light;
+    }
+}

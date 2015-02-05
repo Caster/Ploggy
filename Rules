@@ -1,0 +1,86 @@
+#!/usr/bin/env ruby
+
+#
+# ---- PREPROCESS RULES --------------------------------------------------------
+#
+
+preprocess do
+    # setting a URL
+    items.select{ |item| item[:title] != nil }.each{ |item|
+        item[:title_full] = 'Ploggy - ' + item[:title]
+        splitId = item.identifier.chop.split('/')
+        joinId = splitId[2..-1].join('/')
+        item[:url] = (joinId.length > 0 ? '/' : '') + joinId + '/'
+    }
+
+    # Ploggy-specific handling
+    logs_found = 0
+    items.select{ |item| item.identifier.chop.split('/')[1] == 'logs' }
+    .each{ |item|
+        PloggyHelper.log_items.push(item)
+         logs_found += 1
+    }
+    Nanoc::CLI::Logger.instance.log(:low,
+        sprintf('Found %d log entries.', logs_found))
+end
+
+#
+# ---- COMPILE RULES -----------------------------------------------------------
+#
+
+compile '/assets/*/' do
+    nil
+end
+
+compile '/items/*' do
+    filter :erb
+    layout 'default'
+    filter :tidy
+    filter :relativize_paths, :type => :html
+end
+
+compile '/less/*/' do
+    if item.identifier.chop.split('/').last == 'ploggy'
+        filter :less
+        if item[:yuiCompress]
+            filter :yui_compressor, :type => :css
+        end
+        filter :relativize_paths, :type => :css
+    else
+        nil
+    end
+end
+
+compile '/logs/*/' do
+    filter :kramdown
+end
+
+#
+# ---- ROUTING RULES -----------------------------------------------------------
+#
+
+route '/assets/*/' do
+    item.identifier[7..-2]
+end
+
+route '/items/*' do
+    item[:url] + 'index.html'
+end
+
+route '/less/*/' do
+    if item.identifier.chop.split('/').last == 'ploggy'
+        item.identifier.chop.gsub('less', 'css') + '.css'
+    else
+        nil
+    end
+end
+
+route '/logs/*/' do
+    nil
+end
+
+#
+# ---- LAYOUT RULES ------------------------------------------------------------
+#
+
+layout '*', :erb

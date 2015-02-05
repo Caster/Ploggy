@@ -1,0 +1,93 @@
+---
+id: home
+title: Overview
+---
+<%
+
+    num_entries = PloggyHelper.log_items.length
+    logged_time_s = PloggyHelper.log_time
+    logged_time = PloggyHelper.time_to_s(logged_time_s)
+    tot_day_count = PloggyHelper.work_time(project_start_date, project_end_date)
+    cur_day_count = PloggyHelper.work_time(project_start_date, Date.today)
+    cur_day_count_s = cur_day_count.to_s + '<sup>' + PloggyHelper.sup_fix(cur_day_count) + '</sup>'
+    day_perc = sprintf '%.1f', (100.0 * cur_day_count / tot_day_count)
+    logged_perc = sprintf '%.1f', (100.0 * logged_time_s / (tot_day_count / 5 * project_hours_per_week))
+
+%>
+<div class="row">
+  <div class="stats">
+    <div class="stat">
+        <%= render 'glyph-icon', :name => 'th-list' %>
+        <span class="stat-val"><%= num_entries %></span>
+        <span class="stat-name">log entries</span>
+    </div>
+    <div class="stat">
+        <%= render 'glyph-icon', :name => 'user' %>
+        <span class="stat-val"><%= project_persons.length %></span>
+        <span class="stat-name">persons involved</span>
+    </div>
+    <div class="stat">
+        <%= render 'glyph-icon', :name => 'hourglass' %>
+        <span class="stat-val"><%= cur_day_count %> / <%= tot_day_count %></span>
+        <span class="stat-name">days passed (<%= day_perc %>&#37;)</span>
+    </div>
+    <div class="stat wide">
+        <%= render 'glyph-icon', :name => 'time' %>
+        <span class="stat-val"><%= logged_time %></span>
+        <span class="stat-name">spent (<%= logged_perc %>&#37;)</span>
+    </div>
+  </div>
+  <div class="stats-day-progress">
+    <div class="stats-day-progress-bar light" style="width: <%= day_perc %>%;"></div>
+  </div>
+  <div class="stats-day-progress">
+    <div class="stats-day-progress-bar" style="width: <%= logged_perc %>%;"></div>
+  </div>
+</div>
+<%
+    PloggyHelper.sort_log_items
+    -1.downto(-5) do |i|
+        if PloggyHelper.log_items.length < -i
+            break
+        end
+        item = PloggyHelper.log_items[i]
+        start_time = DateTime.parse(item[:start_time])
+        end_time = (item[:end_time] == nil) ? start_time : DateTime.parse(item[:end_time])
+        date = start_time.strftime('%Y-%m-%d')
+        start_time_s = start_time.strftime('%H:%M')
+        end_time_s = (item[:end_time] == nil) ? '...?' : end_time.strftime('%H:%M')
+%>
+<div class="entry">
+    <div class="date">
+        <%= date %>, <%= start_time_s %> - <%= end_time_s %>
+        <span class="small"><%= PloggyHelper.time_to_s((end_time - start_time) * 1.day) %></span>
+        <span class="category">
+            <%= (item[:category].is_a? Array) ? item[:category].join(', ') : item[:category] %>
+            <%= render 'glyph-icon', :name => 'tag' %>
+        </span>
+    </div>
+    <div class="desc">
+        <p><%= item.reps[0].compiled_content.gsub(/\n\n/, "</p>\n<p>") %></p>
+    </div>
+    <div class="persons">
+        <%
+            persons = item[:persons]
+            if persons == nil
+                persons = []
+            elsif persons.is_a? String
+                persons = [persons]
+            end
+            persons.each{|nick|
+        %>
+        <span class="person" data-nick="<%= nick %>">
+            <%= project_persons[nick] %>
+            <%= render 'glyph-icon', :name => 'user' %>
+        </span>
+        <%
+            }
+        %>
+    </div>
+</div>
+<%
+    end
+%>

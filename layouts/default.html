@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="nanoc <%= Nanoc::VERSION %>">
+    <title><%= @item[:title_full] %></title>
+    <link href="<%= @items['/less/ploggy/'].path %>" rel="stylesheet">
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <ul class="nav pull-right">
+        <%
+            ['home'].each do |id|
+                an_item = item_for_id(id, @item)
+                if an_item.path == @item.path
+        %>
+        <li role="presentation" class="active">
+            <span><%= an_item[:title] %></span>
+        </li>
+        <%      else %>
+        <li>
+            <a href="<%= an_item.path %>"><%= an_item[:title] %></a>
+        </li>
+        <%
+                end
+            end
+        %>
+        </ul>
+        <h3 class="text-muted"><%= project_name %></h3>
+      </div>
+
+      <%= yield %>
+
+      <div class="footer">
+        <p>&copy; Ploggy 2015</p>
+      </div>
+    </div>
+  </body>
+</html>
+
