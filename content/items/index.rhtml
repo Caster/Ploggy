@@ -11,7 +11,7 @@ title: Overview
     cur_day_count = PloggyHelper.work_time(project_start_date, Date.today)
     cur_day_count_s = cur_day_count.to_s + '<sup>' + PloggyHelper.sup_fix(cur_day_count) + '</sup>'
     day_perc = sprintf '%.1f', (100.0 * cur_day_count / tot_day_count)
-    logged_perc = sprintf '%.1f', (100.0 * logged_time_s / (tot_day_count / 5 * project_hours_per_week))
+    logged_perc = sprintf '%.1f', (100.0 * logged_time_s / (tot_day_count / 5.0 * project_hours_per_week))
 
 %>
 <div class="row">
