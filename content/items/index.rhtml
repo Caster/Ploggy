@@ -77,7 +77,7 @@ title: Overview
             elsif persons.is_a? String
                 persons = [persons]
             end
-            persons.each{|nick|
+            ([PloggyHelper.project_me] + persons).each{|nick|
         %>
         <span class="person" data-nick="<%= nick %>">
             <%= project_persons[nick] %>
