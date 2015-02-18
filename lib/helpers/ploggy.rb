@@ -1,6 +1,7 @@
 module PloggyHelper
 
     @log_items = []
+    @use_project_time = false
 
     def self.log_items
         @log_items
@@ -71,6 +72,14 @@ module PloggyHelper
         end
     end
 
+    def self.use_project_time!(upt = true)
+        @use_project_time = upt
+    end
+
+    def self.use_project_time?
+        @use_project_time
+    end
+
     def self.work_time(start_date, end_date)
         start_date.step(end_date).select{|d| !d.saturday? && !d.sunday?}.size
     end
@@ -96,12 +105,12 @@ class Fixnum
     alias :hour :hours
 
     def days
-        self * 24.hours
+        self * (PloggyHelper.use_project_time? ? PloggyConfigHelper.project_hours_per_day : 24.hours)
     end
     alias :day :days
 
     def weeks
-        self * 7.days
+        self * (PloggyHelper.use_project_time? ? PloggyConfigHelper.project_days_per_week : 7.days)
     end
     alias :week :weeks
 

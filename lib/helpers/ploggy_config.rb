@@ -1,7 +1,7 @@
 module PloggyConfigHelper
 
     def project_me
-        # nick of yourself, not currently used
+        # nick of yourself
         'tca'
     end
 
@@ -28,9 +28,14 @@ module PloggyConfigHelper
         Date.parse('2015-02-11')
     end
 
-    def project_hours_per_week
-        # 5 working days, 8 hours per day
-        40.hours
+    def project_days_per_week
+        # fill in the number of days per week you work on your project
+        5.days
+    end
+
+    def project_hours_per_day
+        # fill in the number of hours per day you work on your project
+        8.hours
     end
 
 
