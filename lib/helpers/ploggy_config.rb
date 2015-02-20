@@ -25,7 +25,7 @@ module PloggyConfigHelper
 
     def project_end_date
         # fill in the end date of your project
-        Date.parse('2015-02-11')
+        Date.parse('2015-02-28')
     end
 
     def project_days_per_week
